@@ -1,37 +1,42 @@
 import "./Inspect.css";
-import { inspectUserUrl } from "../../services/userService";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Inspect = () => {
+  const inspectUserUrl = "http://localhost:3000/api/user/";
   const [userName, setUserName] = useState("mheerspink75");
   const [profile, setProfile] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  const inspectUser = async () => {
+    try {
+      setIsLoading(true);
+      setIsError(false);
+      let response = await fetch(inspectUserUrl + userName);
+      if (response.ok) {
+        let data = await response.json();
+        console.log(data);
+        setIsLoading(false);
+        setProfile(data);
+      } else {
+        setIsLoading(false);
+        throw new Error("NETWORK RESPONSE ERROR");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      console.log("FETCH ERROR:", error);
+    }
+  };
+
   const HandleSubmit = (e) => {
     e.preventDefault();
-    const inspectUser = async () => {
-      try {
-        setIsLoading(true);
-        setIsError(false);
-        let response = await fetch(inspectUserUrl + userName);
-        if (response.ok) {
-          let data = await response.json();
-          console.log(data);
-          setIsLoading(false);
-          setProfile(data);
-        } else {
-          setIsLoading(false);
-          throw new Error("NETWORK RESPONSE ERROR");
-        }
-      } catch (error) {
-        setIsLoading(false);
-        setIsError(true);
-        console.log("FETCH ERROR:", error);
-      }
-    };
     inspectUser();
   };
+
+  useEffect(() => {
+    inspectUser()
+  }, [])
 
   return (
     <div className="inspect">
@@ -48,6 +53,7 @@ export const Inspect = () => {
         <br />
         <input type="submit" value="Submit"></input>
       </form>
+
       <div>
         {isLoading ? (
           <div className="listContainer">
@@ -80,6 +86,7 @@ export const Inspect = () => {
           </div>
         )}
       </div>
+
     </div>
   );
 };
