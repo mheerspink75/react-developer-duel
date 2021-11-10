@@ -15,7 +15,7 @@ export const Inspect = () => {
       let response = await fetch(inspectUserUrl + userName);
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
         setProfile(data);
       } else {

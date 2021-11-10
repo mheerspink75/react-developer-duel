@@ -6,6 +6,7 @@ export const Duel = () => {
   const [userName1, setUserName1] = useState("gaearon");
   const [userName2, setUserName2] = useState("qbolt");
   const [profiles, setProfiles] = useState("");
+  const [winner, setWinner] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -19,9 +20,33 @@ export const Duel = () => {
       );
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
         setProfiles(data);
+
+        let user1 = [
+          data[0]["following"],
+          data[0]["followers"],
+          data[0]["highest-starred"],
+          data[0]["perfect-repos"],
+          data[0]["total-stars"]
+        ];
+
+        let user2 = [
+          data[1]["following"],
+          data[1]["followers"],
+          data[1]["highest-starred"],
+          data[1]["perfect-repos"],
+          data[1]["total-stars"],
+        ];
+
+        let count1 = 0;
+        let count2 = 0;
+        for (let i = 0; i < 5; i++) {
+          user1[i] > user2[i] ? count1++ : count2++;
+        }
+
+        count1 > count2 ? setWinner(true) : setWinner(false);
       } else {
         setIsLoading(false);
         throw new Error("NETWORK RESPONSE ERROR");
@@ -49,7 +74,7 @@ export const Duel = () => {
       </label>
       <form onSubmit={HandleSubmit}>
         <input
-          placeholder="userName1"
+          placeholder="user1"
           type="text"
           value={userName1}
           onChange={(e) => {
@@ -58,7 +83,7 @@ export const Duel = () => {
         />
         <br />
         <input
-          placeholder="userName2"
+          placeholder="user2"
           type="text"
           value={userName2}
           onChange={(e) => {
@@ -82,6 +107,7 @@ export const Duel = () => {
               profiles && (
                 <div className="usersContainer">
                   <div className="user1">
+                    {winner ? <div>Winner!!!</div> : <div>Runner up!</div>}
                     <img
                       src={profiles[0]["avatar-url"]}
                       alt="profile pic"
@@ -104,6 +130,7 @@ export const Duel = () => {
                   </div>
 
                   <div className="user2">
+                    {!winner ? <div>Winner!!!</div> : <div>Runner up!</div>}
                     <img
                       src={profiles[1]["avatar-url"]}
                       alt="profile pic"
