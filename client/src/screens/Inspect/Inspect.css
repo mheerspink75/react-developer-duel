@@ -1,0 +1,20 @@
+.inspect {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+.listContainer {
+    margin-top: 20px;
+    display:flex;
+    justify-content: center;
+    text-align: left;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    width: 200px;
+    height: auto;
+}

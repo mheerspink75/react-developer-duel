@@ -1,10 +1,6 @@
 import { Router } from "express";
 import axios from "axios";
 import validate from "express-validation";
-/*
-    TODO: IMPORT TOKEN HERE
-*/
-
 import token from '../../token';
 
 
