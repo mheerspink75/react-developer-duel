@@ -5,7 +5,7 @@ import {
   MenuItem,
   MenuLink,
 } from "./Navbar.styles";
-const Navbar = () => {
+export const Navbar = () => {
   return (
     <Nav>
       <NavbarContainer>
@@ -54,5 +54,3 @@ const Navbar = () => {
     </Nav>
   );
 };
-
-export default Navbar;
