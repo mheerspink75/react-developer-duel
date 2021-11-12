@@ -1,20 +1,24 @@
 .inspect {
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
   }
 
-.listContainer {
-    margin-top: 20px;
-    display:flex;
+.Form {
+    display: flex;
     justify-content: center;
     text-align: left;
 }
 
-li {
-    list-style-type: none;
+.loadingContainer {
+    margin-top: 100px;
 }
 
-img {
-    width: 200px;
-    height: auto;
+.dataContainer {
+    margin-top: 20px;
+}
+
+.Profile {
+    display: flex;
+    justify-content: center;
+    text-align: left;
 }

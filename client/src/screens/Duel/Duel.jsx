@@ -1,5 +1,21 @@
 import "./Duel.css";
 import { useState, useEffect } from "react";
+import {
+  TextField,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  CircularProgress,
+  Alert,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActionArea,
+  Typography,
+  List,
+} from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 export const Duel = () => {
   const duelUsersUrl = "http://localhost:3000/api/users?";
@@ -15,12 +31,11 @@ export const Duel = () => {
     try {
       setIsLoading(true);
       setIsError(false);
-      let response = await fetch(
-        duelUsersUrl + "username=" + userName1 + "&username=" + userName2
-      );
+      let url =
+        duelUsersUrl + "username=" + userName1 + "&username=" + userName2;
+      let response = await fetch(url);
       if (response.ok) {
         let data = await response.json();
-        // console.log(data);
         setIsLoading(false);
         setProfiles(data);
 
@@ -29,7 +44,7 @@ export const Duel = () => {
           data[0]["followers"],
           data[0]["highest-starred"],
           data[0]["perfect-repos"],
-          data[0]["total-stars"]
+          data[0]["total-stars"],
         ];
 
         let user2 = [
@@ -65,98 +80,182 @@ export const Duel = () => {
 
   useEffect(() => {
     duelUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="Duel">
-      <label>
-        <b>Duel users:</b>
-      </label>
-      <form onSubmit={HandleSubmit}>
-        <input
-          placeholder="user1"
-          type="text"
-          value={userName1}
-          onChange={(e) => {
-            setUserName1(e.target.value);
-          }}
-        />
-        <br />
-        <input
-          placeholder="user2"
-          type="text"
-          value={userName2}
-          onChange={(e) => {
-            setUserName2(e.target.value);
-          }}
-        />
-        <br />
-        <input type="submit" value="Submit"></input>
-      </form>
+      <div className="Form">
+        <FormControl>
+          <FormLabel>Dev 1:</FormLabel>
+          <TextField
+            id="outlined-search"
+            size="small"
+            type="search"
+            placeholder="username"
+            value={userName1}
+            onChange={(e) => setUserName1(e.target.value)}
+          />
 
-      <div>
-        {isLoading ? (
-          <div className="listContainer">
-            <p>Loading...</p>
-          </div>
-        ) : (
-          <div className="listContainer">
-            {isError ? (
-              <p>ERROR</p>
-            ) : (
-              profiles && (
-                <div className="usersContainer">
-                  <div className="user1">
-                    {winner ? <div>Winner!!!</div> : <div>Runner up!</div>}
-                    <img
-                      src={profiles[0]["avatar-url"]}
-                      alt="profile pic"
-                    ></img>
-                    <ul>
-                      <li>username: {profiles[0]["username"]}</li>
-                      <li>name: {profiles[0]["name"]}</li>
-                      <li>location: {profiles[0]["location"]}</li>
-                      <li>titles: {profiles[0]["titles"]}</li>
-                      <li>fav language: {profiles[0]["favorite-language"]}</li>
-                      <li>total stars:{profiles[0]["total-stars"]}</li>
-                      <li>
-                        highest star count: {profiles[0]["highest-starred"]}
-                      </li>
-                      <li>public repos: {profiles[0]["public-repos"]}</li>
-                      <li>perfect repos:{profiles[0]["perfect-repos"]}</li>
-                      <li>followers: {profiles[0]["followers"]}</li>
-                      <li>following: {profiles[0]["following"]}</li>
-                    </ul>
-                  </div>
+          <FormHelperText id="my-helper-text">
+            Enter username 1...
+          </FormHelperText>
 
-                  <div className="user2">
-                    {!winner ? <div>Winner!!!</div> : <div>Runner up!</div>}
-                    <img
-                      src={profiles[1]["avatar-url"]}
-                      alt="profile pic"
-                    ></img>
-                    <ul>
-                      <li>username: {profiles[1]["username"]}</li>
-                      <li>name: {profiles[1]["name"]}</li>
-                      <li>location: {profiles[1]["location"]}</li>
-                      <li>titles: {profiles[1]["titles"]}</li>
-                      <li>fav language: {profiles[1]["favorite-language"]}</li>
-                      <li>total stars:{profiles[1]["total-stars"]}</li>
-                      <li>
-                        highest star count: {profiles[1]["highest-starred"]}
-                      </li>
-                      <li>public repos: {profiles[1]["public-repos"]}</li>
-                      <li>perfect repos:{profiles[1]["perfect-repos"]}</li>
-                      <li>followers: {profiles[1]["followers"]}</li>
-                      <li>following: {profiles[1]["following"]}</li>
-                    </ul>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        )}
+          <FormLabel>Dev 2:</FormLabel>
+          <TextField
+            id="outlined-search"
+            size="small"
+            type="search"
+            placeholder="username"
+            value={userName2}
+            onChange={(e) => setUserName2(e.target.value)}
+          />
+
+          <FormHelperText id="my-helper-text">
+            Enter username 2...
+          </FormHelperText>
+
+          <Button
+            type="submit"
+            variant="outlined"
+            size="small"
+            value="Submit"
+            onClick={HandleSubmit}
+          >
+            Submit
+          </Button>
+        </FormControl>
       </div>
+
+      {isLoading ? (
+        <div className="loadingContainer">
+          <CircularProgress />
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <div className="dataContainer">
+          {isError ? (
+            <Alert severity="error">
+              This is an error alert — check it out!
+            </Alert>
+          ) : (
+            profiles && (
+              <div className="usersContainer">
+                <div className="user1">
+                  {winner ? <h3>Winner!!!</h3> : <p>2nd Place...</p>}
+                  <Card sx={{ maxWidth: 500 }}>
+                    <CardActionArea>
+                      <Typography variant="h5" color="text.secondary">
+                        <GitHubIcon /> {profiles[0]["username"]}
+                      </Typography>
+                      <CardMedia
+                        component="img"
+                        height="200px"
+                        image={profiles[0]["avatar-url"]}
+                        alt="profile pic"
+                        onClick={(event) =>
+                          (window.location.href =
+                            "https://github.com/" + profiles[0]["username"])
+                        }
+                      />
+                    </CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {profiles[0]["name"]}
+                      </Typography>
+
+                      <Typography variant="body2" color="text.secondary">
+                        {profiles[0]["location"] === null
+                          ? ""
+                          : profiles[0]["location"]}
+                      </Typography>
+
+                      <Typography variant="caption" color="text.secondary">
+                        {profiles[0]["bio"] !== "" || null
+                          ? profiles[0]["bio"]
+                          : ""}
+                      </Typography>
+
+                      <Typography variant="h6">
+                        <List className="userList">
+                          <li>titles: {profiles[0]["titles"]}</li>
+                          <li>
+                            fav language: {profiles[0]["favorite-language"]}
+                          </li>
+                          <li>total stars:{profiles[0]["total-stars"]}</li>
+                          <li>
+                            highest star count: {profiles[0]["highest-starred"]}
+                          </li>
+                          <li>public repos: {profiles[0]["public-repos"]}</li>
+                          <li>perfect repos:{profiles[0]["perfect-repos"]}</li>
+                          <li>followers: {profiles[0]["followers"]}</li>
+                          <li>following: {profiles[0]["following"]}</li>
+                        </List>
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="user2">
+                  {!winner ? <h3>Winner!!!</h3> : <p>2nd place...</p>}
+
+                  <Card sx={{ maxWidth: 500 }}>
+                    <CardActionArea>
+                      <Typography variant="h5" color="text.secondary">
+                        <GitHubIcon /> {profiles[1]["username"]}
+                      </Typography>
+                      <CardMedia
+                        component="img"
+                        height="200px"
+                        image={profiles[1]["avatar-url"]}
+                        alt="profile pic"
+                        onClick={(event) =>
+                          (window.location.href =
+                            "https://github.com/" + profiles[1]["username"])
+                        }
+                      />
+                    </CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {profiles[1]["name"]}
+                      </Typography>
+
+                      <Typography variant="body2" color="text.secondary">
+                        {profiles[1]["location"] === null
+                          ? ""
+                          : profiles[1]["location"]}
+                      </Typography>
+
+                      <Typography variant="caption" color="text.secondary">
+                        {profiles[1]["bio"] !== "" || null
+                          ? profiles[1]["bio"]
+                          : ""}
+                      </Typography>
+
+                      <Typography variant="h6">
+                        <List className="userList">
+                          <li>titles: {profiles[1]["titles"]}</li>
+                          <li>
+                            fav language: {profiles[1]["favorite-language"]}
+                          </li>
+                          <li>total stars:{profiles[1]["total-stars"]}</li>
+                          <li>
+                            highest star count: {profiles[1]["highest-starred"]}
+                          </li>
+                          <li>public repos: {profiles[1]["public-repos"]}</li>
+                          <li>perfect repos:{profiles[1]["perfect-repos"]}</li>
+                          <li>followers: {profiles[1]["followers"]}</li>
+                          <li>following: {profiles[1]["following"]}</li>
+                        </List>
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };

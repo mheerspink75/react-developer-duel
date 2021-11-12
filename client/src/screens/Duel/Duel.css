@@ -1,8 +1,22 @@
 .Duel {
-    margin-top: 20px;
+    margin-top: 25px;
     text-align: center;
 }
 
+.Form {
+    margin-top: 25px;
+}
+
+.loadingContainer {
+    margin-top: 100px;
+}
+
+.dataContainer {
+    margin-top: 20px;
+}
+
 .usersContainer {
-    display:flex;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: left;
 }

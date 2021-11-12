@@ -50,12 +50,12 @@ export default () => {
       for (let username of usernames) {
         multipleUsers.push(await userService(username));
       }
+      res.json(multipleUsers);
     } catch (err) {
       res
         .status(404)
         .json({ error: err.message, tips: "One of those users was not found... Or maybe both." });
     }
-    res.json(multipleUsers);
   });
 
   return router;

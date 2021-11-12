@@ -1,6 +1,7 @@
 const inspectUserUrl = "http://localhost:3000/api/user/";
 const duelUsersUrl = "http://localhost:3000/api/users?";
 
+
 export const inspectUser = async (username = "andrew") => {
   // await response of fetch call
   let response = await fetch(inspectUserUrl + username);

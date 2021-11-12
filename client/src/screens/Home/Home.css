@@ -1,8 +1,16 @@
-#home {
-  margin-top: 10px;
+.Home {
+  margin-top: 20px;
   text-align: center;
 }
 
-#linkGroup > #link {
-  text-decoration: none;
+.ButtonGroup {
+  margin-top: 20px;
+}
+
+.gifContainer {
+  margin-top: 100px;
+}
+#gitHubGif {
+  width: 15%;
+  height: auto;
 }
