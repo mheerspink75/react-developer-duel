@@ -50,6 +50,7 @@ export default () => {
       for (let username of usernames) {
         multipleUsers.push(await userService(username));
       }
+      // moved res.json(multiplueUsers) to line 54 due to server errors
       res.json(multipleUsers);
     } catch (err) {
       res
