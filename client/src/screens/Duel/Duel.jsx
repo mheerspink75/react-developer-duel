@@ -1,5 +1,17 @@
-import "./Duel.css";
 import { useState, useEffect } from "react";
+
+import {
+  Winner,
+  RunnerUp,
+  DuelContainer,
+  UsersForm,
+  UserResults,
+  User1,
+  User2,
+  ResultsContainer,
+  LoadingContainer,
+} from "./Duel.styles";
+
 import {
   TextField,
   Button,
@@ -84,8 +96,8 @@ export const Duel = () => {
   }, []);
 
   return (
-    <div className="Duel">
-      <div className="Form">
+    <DuelContainer>
+      <UsersForm>
         <FormControl>
           <FormLabel>Dev 1:</FormLabel>
           <TextField
@@ -125,25 +137,29 @@ export const Duel = () => {
             Submit
           </Button>
         </FormControl>
-      </div>
+      </UsersForm>
 
       {isLoading ? (
-        <div className="loadingContainer">
+        <LoadingContainer>
           <CircularProgress />
           <p>Loading...</p>
-        </div>
+        </LoadingContainer>
       ) : (
-        <div className="dataContainer">
+        <ResultsContainer>
           {isError ? (
             <Alert severity="error">
               This is an error alert — check it out!
             </Alert>
           ) : (
             profiles && (
-              <div className="usersContainer">
-                <div className="user1">
-                  {winner ? <h3>Winner!!!</h3> : <p>2nd Place...</p>}
-                  <Card sx={{ maxWidth: 500 }}>
+              <UserResults>
+                <User1>
+                  {winner ? (
+                    <Winner>Winner!!!</Winner>
+                  ) : (
+                    <RunnerUp>2nd Place...</RunnerUp>
+                  )}
+                  <Card sx={{ maxWidth: 200, height: 500 }}>
                     <CardActionArea>
                       <Typography variant="h5" color="text.secondary">
                         <GitHubIcon /> {profiles[0]["username"]}
@@ -194,12 +210,16 @@ export const Duel = () => {
                       </Typography>
                     </CardContent>
                   </Card>
-                </div>
+                </User1>
 
-                <div className="user2">
-                  {!winner ? <h3>Winner!!!</h3> : <p>2nd place...</p>}
+                <User2>
+                  {!winner ? (
+                    <Winner>Winner!!!</Winner>
+                  ) : (
+                    <RunnerUp>2nd place...</RunnerUp>
+                  )}
 
-                  <Card sx={{ maxWidth: 500 }}>
+                  <Card sx={{ maxWidth: 200, height: 500 }}>
                     <CardActionArea>
                       <Typography variant="h5" color="text.secondary">
                         <GitHubIcon /> {profiles[1]["username"]}
@@ -250,12 +270,12 @@ export const Duel = () => {
                       </Typography>
                     </CardContent>
                   </Card>
-                </div>
-              </div>
+                </User2>
+              </UserResults>
             )
           )}
-        </div>
+        </ResultsContainer>
       )}
-    </div>
+    </DuelContainer>
   );
 };

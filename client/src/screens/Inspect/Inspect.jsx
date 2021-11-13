@@ -1,5 +1,11 @@
-import "./Inspect.css";
 import { useState, useEffect } from "react";
+import {
+  InspectContainer,
+  FormContainer,
+  LoadingContainer,
+  ResultsContainer,
+  UserProfile,
+} from "./Inspect.styles";
 import {
   TextField,
   Button,
@@ -19,7 +25,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 
 export const Inspect = () => {
   const inspectUserUrl = "http://localhost:3000/api/user/";
-  const [userName, setUserName] = useState("mheerspink75");
+  const [userName, setUserName] = useState("andrew");
   const [profile, setProfile] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -55,8 +61,8 @@ export const Inspect = () => {
   }, []);
 
   return (
-    <div className="inspect">
-      <div className="Form">
+    <InspectContainer>
+      <FormContainer>
         <FormControl>
           <FormLabel>Inspect Dev:</FormLabel>
           <TextField
@@ -81,23 +87,23 @@ export const Inspect = () => {
             Submit
           </Button>
         </FormControl>
-      </div>
+      </FormContainer>
 
       {isLoading ? (
-        <div className="loadingContainer">
+        <LoadingContainer>
           <CircularProgress />
           <p>Loading...</p>
-        </div>
+        </LoadingContainer>
       ) : (
-        <div className="dataContainer">
+        <ResultsContainer>
           {isError ? (
             <Alert severity="error">
               This is an error alert — check it out!
             </Alert>
           ) : (
             profile && (
-              <div className="Profile">
-                <Card sx={{ maxWidth: 500 }}>
+              <UserProfile>
+                <Card sx={{ maxWidth: 200, height: 500 }}>
                   <CardActionArea>
                     <Typography variant="h5" color="text.secondary">
                       <GitHubIcon /> {profile["username"]}
@@ -108,7 +114,8 @@ export const Inspect = () => {
                       image={profile["avatar-url"]}
                       alt="profile pic"
                       onClick={(event) =>
-                        (window.location.href ="https://github.com/" + profile["username"])
+                        (window.location.href =
+                          "https://github.com/" + profile["username"])
                       }
                     />
                   </CardActionArea>
@@ -124,7 +131,7 @@ export const Inspect = () => {
                     <Typography variant="caption" color="text.secondary">
                       {profile["bio"] !== "" || null ? profile["bio"] : ""}
                     </Typography>
-      
+
                     <Typography variant="h6">
                       <List className="userList">
                         <li>titles: {profile["titles"]}</li>
@@ -141,11 +148,11 @@ export const Inspect = () => {
                     </Typography>
                   </CardContent>
                 </Card>
-              </div>
+              </UserProfile>
             )
           )}
-        </div>
+        </ResultsContainer>
       )}
-    </div>
+    </InspectContainer>
   );
 };
